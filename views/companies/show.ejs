@@ -1,0 +1,79 @@
+<% include ../partials/header %>
+
+<div class="col-lg-4">
+    <div class="text-center">
+        <div>
+            <br>
+            <div class="thumbnail">
+                <img class="rounded" src="<%= company.image %>">
+            </div>
+        </div>
+        <br>
+        <div>
+            <p><strong><%= company.fullName %></strong></p>
+        </div>
+        <hr>
+        <br>
+        <a href="https://facebook.com"><img src="https://cdn4.iconfinder.com/data/icons/social-media-free-13/32/Facebook_social_media_logo-48.png"/></a>
+        <a href="https://linkedin.com"><img src="https://cdn4.iconfinder.com/data/icons/social-media-free-13/32/Linkedin_social_media_logo-48.png"/></a>
+        <a href="https://instagram.com"><img src="https://cdn4.iconfinder.com/data/icons/social-media-free-13/32/Instagram_social_media_logo-48.png"/></a>
+        <a href="https://twitter.com"><img src="https://cdn4.iconfinder.com/data/icons/social-media-free-13/32/Twitter_social_media_logo-48.png"/></a>
+        <a href="https://snapchat.com"><img src="https://cdn4.iconfinder.com/data/icons/social-media-free-13/32/Snapchat_social_media_logo-48.png"/></a>
+            
+    </div>
+</div>
+    
+<div class="col-lg-6">
+    <div>            
+        <h2><%= company.fullName %></h2>
+    </div>
+    <div>
+        <a href="https://www.google.com/maps/place/<%= company.location %>"><h4><%= company.location %></h4></a>
+    </div>
+    <div>
+        <p>ID - <%=company._id%></p>
+        <% if(currentUser && company.author.id.equals(currentUser._id)){ %>
+        <a class="btn btn-xs btn-default" href="/companies/<%= company._id %>/edit">Edit Profile</a>
+        <form id="delete-form" action="/companies/<%= company._id %>?_method=DELETE" method="POST">
+            <button class="btn btn-xs btn-danger">Delete Account</button>
+        </form>
+        <% } %>
+    </div>
+    
+    <div>
+        <hr>
+        <h4>Stock Ownership</h4>
+            Name Terms - <em><p style="color:gray"><%=company.fullName%> - 0/3</em></p>
+            Location Terms - <em><p style="color:gray"><%=company.location%> - 0/3</em></p>
+    </div>
+        
+    <div>
+        <hr>
+        <div class="row">
+            <div class="col-lg-6">    
+                <h4>Name Stats</h4>
+                    <p>nth <a href="http://wrldvwone.herokuapp.com/companies?search=<%= company.fullName %>"><%= company.fullName %></a> globally
+                    <br>
+                        <!--need to add ability to display each separate word from an org's name
+                        nth "<font color="#337ab7"><%=company.fullName[0]%></font>" globally
+                        <br>
+                        nth "<font color="#337ab7"><%=company.fullName[1]%></font>" globally</p> -->
+            </div>
+            
+            
+            <div class="col-lg-6">
+                <h4>Location Stats</h4>
+                    <p>nth company in <a href="https://www.google.com/maps/place/<%=company.location%>"><%=company.location%></a></p>
+            </div>
+            
+        </div>
+    </div>
+    
+    <div>
+        <hr>
+        <h4>Overview</h4>
+        <p><%=company.overview%></p>
+    </div>
+</div>
+
+<% include ../partials/footer %>

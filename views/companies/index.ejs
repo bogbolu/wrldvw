@@ -1,0 +1,76 @@
+<% include ../partials/header %>
+
+    <section class="jumbotron text-center"> 
+        <div class="container">
+            <h1>Welcome to WRLDVW</h1>
+            <p>A global directory where users can trade stock related to their name or location.</p>
+            <h5>Total Companies: <%=companies.length %></h5>
+            <p>
+                <% if(currentUser){%>
+                <a class="btn btn-primary btn-large" href="/companies/new">Create Profile</a>
+                <% } %>
+            </p>
+            <p>
+                <form action="/companies" method="GET" class="form-inline">
+                    <div class="form-group">
+                        <input type="text" name="search" placeholder="Company search" class="form-control">
+                        <input type="submit" value="Search" class="btn btn-default">
+                    </div>
+                </form>
+            </p>
+        </div>
+    </section>
+
+    <!--RESULTS TABLE, IF THERE'S A MATCH-->
+    <div class="table-responsive">
+        <% if(noCompanyMatch == null) { %>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Global Rank</th>
+                    <th>Company Name</th>
+                    <th>Location</th>
+                    <th>ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% companies.forEach(function(company){ %>
+                <tr>
+                    <td><a href="/companies/<%=company._id%>"><%=company.fullName%></a></td>
+                    <td><%=company.location%></td>
+                    <td><%=company._id%></td>
+                </tr> 
+                <% }); %>            
+            </tbody>
+        </table>      
+        <script>
+            var tbodys = document.getElementsByTagName('tbody');
+            var tbody = tbodys[tbodys.length - 1];
+            var rows = tbody.rows;
+            for(var i = 0, td; i < rows.length; i++){
+                td = document.createElement('td');
+                td.appendChild(document.createTextNode(i + 1));
+                rows[i].insertBefore(td, rows[i].firstChild);
+            }
+        </script>
+        <% } %>
+    </div>
+    
+    <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+    <!--NO MATCH FOR SEARCH TERM -->
+        <div class="col-md-12">
+            <% if(noCompanyMatch !== null) { %>
+            <h3><%= noCompanyMatch %></h3>
+            <!--<p>
+                <form action="/companies" method="GET" class="form-inline">
+                    <div class="form-group">
+                        <input type="text" name="search" placeholder="Company search" class="form-control">
+                        <input type="submit" value="Search" class="btn btn-default">
+                    </div>
+                </form>
+            </p> --> 
+            <% } %>
+        </div>    
+    </div>
+
+<% include ../partials/footer %>

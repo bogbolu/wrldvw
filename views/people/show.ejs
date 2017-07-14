@@ -1,0 +1,88 @@
+<% include ../partials/header %>
+
+<div class="text-center">
+    <div class="col-lg-4">
+        <div>
+            <br>
+            <div class="thumbnail">
+                <img class="rounded" src="<%= person.image %>">
+            </div>
+        </div>
+        <br>
+        <div>
+            <p><strong><%=person.fullName%></strong></p>
+        </div>
+        <hr>
+        <br>
+            <a href="https://facebook.com"><img src="https://cdn4.iconfinder.com/data/icons/social-media-free-13/32/Facebook_social_media_logo-48.png"/></a>
+            <a href="https://linkedin.com"><img src="https://cdn4.iconfinder.com/data/icons/social-media-free-13/32/Linkedin_social_media_logo-48.png"/></a>
+            <a href="https://instagram.com"><img src="https://cdn4.iconfinder.com/data/icons/social-media-free-13/32/Instagram_social_media_logo-48.png"/></a>
+            <a href="https://twitter.com"><img src="https://cdn4.iconfinder.com/data/icons/social-media-free-13/32/Twitter_social_media_logo-48.png"/></a>
+            <a href="https://snapchat.com"><img src="https://cdn4.iconfinder.com/data/icons/social-media-free-13/32/Snapchat_social_media_logo-48.png"/></a>
+    </div>
+</div>
+    
+<div class="col-lg-6">
+    <div>
+        <h2><%=person.fullName%></h2>
+    </div>
+    <div>
+        <a href="#"><h4><%=person.location.city%>, <% if (person.location.state == 0) { %> <%=person.location.country%> <% } else {%> <%=person.location.state%>, <%=person.location.country%> <% } %></h4></a>
+    </div>
+    <div>
+        <p>ID - <%=person._id%></p>
+        <% if(currentUser && person.author.id.equals(currentUser._id)){ %>
+            <a class="btn btn-xs btn-default" href="/people/<%= person._id %>/edit">Edit Profile</a>
+            <form id="delete-form" action="/people/<%= person._id %>?_method=DELETE" method="POST">
+                <button class="btn btn-xs btn-danger">Delete Account</button>
+            </form>
+        <% } %>
+    </div>
+    
+    <div>
+        <hr>
+        <h4>Stock Ownership</h4>
+            Name Terms
+            <p><em style="color:gray"><%=person.fullName%> - 0/3</em> &nbsp; | &nbsp; <em style="color:gray"><%=person.firstName%> - 0/3</em> &nbsp; | &nbsp; <em style="color:gray"><%=person.lastName%> - 0/3</em></p>
+            Location Terms
+            <p>City: <em style="color:gray"><%=person.location.city%> - 0/3</em> &nbsp; | &nbsp; <% if (person.location.state == 0) { %> Country: <em style="color:gray"><%=person.location.country%> - 0/3</em> <% } else {%> State/Region: <em style="color:gray"><%=person.location.state%> - 0/3</em> &nbsp; | &nbsp; Country: <em style="color:gray"><%=person.location.country%> - 0/3</em> <% } %></p>
+    </div>
+    
+    <div>
+        <hr>
+        <div class="row">
+            <div class="col-lg-6">
+                <h4>Name Stats</h4>
+                    <%= rankings.fullName %> <a href="http://wrldvwone.herokuapp.com/people?search=<%=person.fullName%>"><%=person.fullName%></a> <br>
+                    <%= rankings.firstName %> <a href="http://wrldvwone.herokuapp.com/people?search=<%=person.firstName%>"><%=person.firstName%></a> <br>
+                    <%= rankings.lastName %> <a href="http://wrldvwone.herokuapp.com/people?search=<%=person.lastName%>"><%=person.lastName%></a> <br>
+                    <% for(name in rankings.names) { %>
+                    <%= rankings.names[name] %> <a href="http://wrldvwone.herokuapp.com/people?search=<%=name%>"> <%=name%></a> <br>
+                    <% } %>
+            </div>
+            
+            <div class="col-lg-6">
+                <h4>Location Stats</h4>
+                    <p><%= rankings.city %> person in <a href="#"><%=person.location.city%></a>
+                    <br>
+                    <% if (person.location.state == 0) { %> 
+                    <%= rankings.country %> person in <a href="#"><%=person.location.country%></a></p> 
+                    <% } else { %>
+                    <%= rankings.state %> person in <a href="#"><%=person.location.state%></a>
+                    <br>
+                <%= rankings.country %> person in <a href="#"><%=person.location.country%></a></p> <% } %>
+            </div>
+        </div>
+    </div>
+    
+    <div>
+        <% if(person.overview != 0){ %>
+            <hr>
+            <h4>Overview</h4>
+                <p><%=person.overview%></p>
+        <%  } else { %>
+        <%  } %>
+    </div>
+</div>
+
+<% include ../partials/footer %>

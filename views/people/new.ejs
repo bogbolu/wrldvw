@@ -1,0 +1,76 @@
+<% include ../partials/header %>
+
+<div class="row">
+    <h1 style="text-align: center;">Profile Details</h1>
+    <div style="width: 30%; margin:25px auto;">
+        <form action="/people" method="POST">
+            <div class="form-group">
+                <input class="form-control" type="text" maxlength="20" name="firstName" placeholder="First Name" required=true>
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" maxlength="20" name="lastName" placeholder="Last Name" required=true>
+            </div>
+            <div class="form-group">
+                <input onClick="this.setSelectionRange(0, this.value.length)" id="locationTextField" class="form-control" type="text" name="locationPrevious" placeholder="City" required=true>                    
+            </div>
+        
+            <div class="form-group">
+                <input class="form-control" type="text" name="image" placeholder="image url" required=true>                    
+            </div>
+            <div class="form-group">
+                <p><textarea class="form-control" type="text" wrap="hard" rows="5" maxlength="250" name="overview" placeholder="Overview"></textarea></p>                    
+            </div>
+            <div class="form-group">
+                <button class="btn btn-lg btn-primary btn-block">Submit</button>
+            </div>
+            <input id="location-city" type="hidden" name="city">
+            <input id="location-state" type="hidden" name="state">
+            <input id="location-country" type="hidden" name="country">
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA56qDbSumnfLh0EaLqOEQ-ukMnloGLiLI&libraries=places"></script>
+
+    <script>
+        function init() {
+            var options = {
+                  types: ['(cities)']
+                 };
+            var input = document.getElementById('locationTextField');
+            var autocomplete = new google.maps.places.Autocomplete(input, options);
+                
+            autocomplete.addListener('place_changed', function() {
+                var place = autocomplete.getPlace();
+                console.log(place.address_components);
+                var addressComponents = place.address_components;
+                var arrayLength = addressComponents.length;
+                var city = '';
+                var state = '';
+                var country = '';
+                for (var i = 0; i < arrayLength; i++) {
+                    var addressComponent = addressComponents[i];
+                    var types = addressComponent.types;
+                    var typesArrayLength = types.length;
+                    for (var j = 0; j < typesArrayLength; j++) {
+                        var type = types[j];
+                        if (type == 'locality') {
+                            city = addressComponent.long_name;                    
+                        }
+                        if (type == 'administrative_area_level_1') {
+                            state = addressComponent.long_name;                   
+                        }
+                        if (type == 'country') {
+                            country = addressComponent.long_name;
+                        }
+                    }
+                }
+                document.getElementById('location-city').value=city;
+                document.getElementById('location-state').value=state;
+                document.getElementById('location-country').value=country;
+            });    
+        }
+            
+        google.maps.event.addDomListener(window, 'load', init);
+    </script>
+<% include ../partials/footer %>
